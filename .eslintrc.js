@@ -25,6 +25,8 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off"
   }
 };

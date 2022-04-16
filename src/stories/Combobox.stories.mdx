@@ -2,14 +2,21 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 <Meta title="Combobox" />
 
+import {ChakraProvider} from '@chakra-ui/react';
 import Checkbox from '..';
 
-export const Template = (args) => <Checkbox {...args} />;
+export const Template = (args) => <Checkbox name="Combobox" {...args} />
+
+export const characters = [
+    { name: 'Philip J. Fry', species: 'Human' }
+]
 
 <Canvas>
   <Story 
-    name="Unchecked"
-    args={{ name: "World" }}>
+    name="Basic"
+    args={{ 
+      items: characters.map(c => c.name) 
+    }}>
     {Template.bind({})}
    </Story>
 </Canvas>
