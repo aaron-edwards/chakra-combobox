@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Combobox" />
+
+import Checkbox from '..';
+
+export const Template = (args) => <Checkbox {...args} />;
+
+<Canvas>
+  <Story 
+    name="Unchecked"
+    args={{ name: "World" }}>
+    {Template.bind({})}
+   </Story>
+</Canvas>
