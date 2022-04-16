@@ -3,10 +3,13 @@ module.exports = {
     browser: true,
     es2021: true,
   },
+  plugins: ["prettier"],
   extends: [
     'plugin:react/recommended',
     'airbnb',
-    'airbnb-typescript'
+    'airbnb-typescript',
+    'prettier',
+    "plugin:prettier/recommended"
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -22,5 +25,6 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-  },
+    "prettier/prettier": "error"
+  }
 };

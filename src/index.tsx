@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 type Props = {
-  name: string
+  name: string;
 };
 
-export default function Combobox({ name = 'World' }: Props) {
+export default function Combobox({ name = "World" }: Props) {
   return <h1>{`Hello ${name}`}</h1>;
 }
