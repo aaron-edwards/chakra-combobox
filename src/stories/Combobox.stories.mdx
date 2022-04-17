@@ -5,10 +5,19 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import {ChakraProvider} from '@chakra-ui/react';
 import Checkbox from '..';
 
-export const Template = (args) => <Checkbox name="Combobox" {...args} />
+export const Template = (args) => 
+  <Checkbox 
+    name="Combobox" 
+    {...args} 
+    filter={(input) => {
+      const regexs = input.split(" ").map(part => new RegExp(part, 'i'))
+      return (item) => regexs.every(re => item.match(re))
+    }}
+  />
 
 export const characters = [
-    { name: 'Philip J. Fry', species: 'Human' }
+    { name: 'Philip J. Fry', species: 'Human' },
+    { name: 'Bender Bending Rodríguez', species: 'Robot' }
 ]
 
 <Canvas>

@@ -2,7 +2,8 @@ import {addDecorator} from '@storybook/react'
 
 import React from 'react'
 import {ChakraProvider, CSSReset} from '@chakra-ui/react'
-import theme from '@chakra-ui/theme'
+import theme from '../src/theme'
+import { withPerformance } from "storybook-addon-performance"
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -14,9 +15,13 @@ export const parameters = {
   },
 }
 
-addDecorator(storyFn => (
-  <ChakraProvider theme={theme}>
-    <CSSReset />
-    {storyFn()}
-  </ChakraProvider>
-))
+const withChakra = (StoryFn) => (
+  <React.StrictMode>
+    <CSSReset/>
+    <ChakraProvider theme={theme}>
+      <StoryFn />
+    </ChakraProvider>
+  </React.StrictMode>
+)
+
+export const decorators = [ withChakra, withPerformance ]

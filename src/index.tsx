@@ -1,16 +1,7 @@
-import {
-  Box,
-  ButtonGroup,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  ListItem,
-  UnorderedList,
-} from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { Box, List, ListItem } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import ComboboxInput from "./ComboboxInput";
 
 function defaultItemToString<T>(item: T) {
   return typeof item === "string" ? item : JSON.stringify(item);
@@ -29,22 +20,29 @@ type Props<T> = {
   itemToString?: (item: T | null) => string;
   itemKey?: (item: T) => string;
   label?: (item: T) => React.ReactNode;
+  filter: (inputValue: string) => (item: T) => boolean;
 };
 
 export default function Combobox<T>({
   name,
-  items,
   itemToString = defaultItemToString,
   ...props
 }: Props<T>) {
   const itemKey = props.itemKey ?? itemToString;
   const label = props.label ?? itemToString;
+
   const createLabel = useCallback(
     (prefix?: string) => ariaLabel(name, prefix),
     [name]
   );
-
   const [inputValue, setInputValue] = useState("");
+  const items = useMemo(() => {
+    if (inputValue) {
+      const predicate = props.filter(inputValue);
+      return props.items.filter(predicate);
+    }
+    return props.items;
+  }, [props.items, props.filter, inputValue]);
 
   const combobox = useCombobox({
     items,
@@ -53,52 +51,40 @@ export default function Combobox<T>({
     onInputValueChange: ({ inputValue: newValue }) =>
       setInputValue(newValue ?? ""),
   });
+
   return (
     <Box {...combobox.getComboboxProps({ name, "aria-label": createLabel() })}>
-      <InputGroup>
-        <Input
-          {...combobox.getInputProps({ "aria-label": createLabel("input") })}
-        />
-        <InputRightAddon paddingX="0px">
-          <ButtonGroup spacing="0" variant="ghost">
-            <IconButton
-              {...combobox.getToggleButtonProps({
-                "aria-label": createLabel("toggle"),
-              })}
-              icon={
-                <ChevronDownIcon
-                  transform={combobox.isOpen ? "rotate(-180deg)" : undefined}
-                  transition="0.2s ease-in-out;"
-                />
-              }
-            />
-          </ButtonGroup>
-        </InputRightAddon>
-      </InputGroup>
+      <ComboboxInput
+        isOpen={combobox.isOpen}
+        hasSelectedItem={combobox.selectedItem !== null}
+        inputProps={combobox.getInputProps}
+        toggleButtonProps={combobox.getToggleButtonProps}
+        onClose={combobox.reset}
+      />
 
       <Box {...combobox.getMenuProps()}>
         {combobox.isOpen && (
-          <UnorderedList
-            marginStart="0px"
-            marginTop="1"
-            listStyleType="none"
+          <List
+            borderRadius="base"
+            border="1px solid"
             borderColor="gray.200"
-            borderWidth="1px"
-            borderRadius="md"
+            marginTop="1"
+            marginStart="0"
+            listStyleType="none"
           >
-            {items.map((item, index) => (
-              <ListItem
-                key={itemKey(item)}
-                background={
-                  combobox.highlightedIndex === index ? "gray.200" : undefined
-                }
-                fontWeight={combobox.selectedItem === item ? "bold" : undefined}
-                {...combobox.getItemProps({ item, index })}
-              >
-                {label(item)}
-              </ListItem>
-            ))}
-          </UnorderedList>
+            {items.map((item, index) => {
+              return (
+                <ListItem
+                  key={itemKey(item)}
+                  bg={combobox.highlightedIndex === index && "gray.200"}
+                  fontWeight={combobox.selectedItem === item && "bold"}
+                  {...combobox.getItemProps({ item, index })}
+                >
+                  {label(item)}
+                </ListItem>
+              );
+            })}
+          </List>
         )}
       </Box>
     </Box>
