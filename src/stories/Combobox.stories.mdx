@@ -1,4 +1,5 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
 
 <Meta title="Combobox" />
 
@@ -12,6 +13,7 @@ export const animalNames = animals.map(c => c.name)
 export const Template = (args) => 
   <Combobox
     name="Combobox" 
+    onChange={action("item selected")}
     {...args} 
   />
 

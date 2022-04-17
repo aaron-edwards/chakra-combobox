@@ -4,11 +4,14 @@
   "main": "index.js",
   "repository": "git@github.com:aaron-edwards/chakra-combobox.git",
   "license": "MIT",
+  "homepage": "http://aaron-edwards.github.io/chakra-combobox",
   "scripts": {
     "build": "tsc",
     "test": "jest",
     "lint": "eslint --cache --ext js,jsx,ts,tsx,test src",
     "storybook": "start-storybook -p 6006",
+    "predeploy": "build-storybook",
+    "deploy-storybook": "gh-pages -d storybook-static",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
@@ -51,6 +54,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "gh-pages": "^3.2.3",
     "jest": "^27.5.1",
     "prettier": "^2.6.2",
     "storybook-addon-performance": "^0.16.1",
