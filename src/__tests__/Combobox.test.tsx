@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Combobox from "..";
+import Combobox from "../Combobox";
 
 describe("<Combobox />", () => {
   const defaultProps = {
     name: "combobox",
-    items: [],
+    items: ["Dog", "Cat", "Bird"],
   };
   it("should contain a combobox", async () => {
     const { findByRole } = render(<Combobox {...defaultProps} />);

@@ -2,29 +2,38 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 <Meta title="Combobox" />
 
-import {ChakraProvider} from '@chakra-ui/react';
-import Checkbox from '..';
+import { ChakraProvider, Text  } from '@chakra-ui/react';
+import {Combobox} from '..';
+import { animals as allAnimals } from './data'
+
+export const animals = allAnimals.slice(0, 20)
+export const animalNames = animals.map(c => c.name)  
 
 export const Template = (args) => 
-  <Checkbox 
+  <Combobox
     name="Combobox" 
     {...args} 
-    filter={(input) => {
-      const regexs = input.split(" ").map(part => new RegExp(part, 'i'))
-      return (item) => regexs.every(re => item.match(re))
-    }}
   />
-
-export const characters = [
-    { name: 'Philip J. Fry', species: 'Human' },
-    { name: 'Bender Bending Rodríguez', species: 'Robot' }
-]
 
 <Canvas>
   <Story 
     name="Basic"
     args={{ 
-      items: characters.map(c => c.name) 
+      items: animalNames
+    }}>
+    {Template.bind({})}
+   </Story>
+  <Story 
+    name="Rich label"
+    args={{ 
+      items: animals,
+      itemToString: (animal) => animal.name,
+      label: (animal) =>
+        <Text as="span">
+          {animal.emoji}
+          {animal.name}
+          <Text as="sup" color={animal.color} padding="2">{animal.type}</Text>
+        </Text>
     }}>
     {Template.bind({})}
    </Story>
