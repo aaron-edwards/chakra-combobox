@@ -11,8 +11,7 @@
     "lint": "eslint --cache --ext js,jsx,ts,tsx,test src",
     "storybook": "start-storybook -p 6006",
     "predeploy": "build-storybook",
-    "deploy-storybook": "gh-pages -d storybook-static",
-    "build-storybook": "build-storybook"
+    "deploy": "gh-pages -d storybook-static"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
