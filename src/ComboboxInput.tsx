@@ -16,7 +16,7 @@ export type ComboboxInputProps<T> = {
   hasSelectedItem: boolean;
   inputProps: UseComboboxPropGetters<T>["getInputProps"];
   toggleButtonProps: UseComboboxPropGetters<T>["getToggleButtonProps"];
-  onClose: () => void;
+  onClear: () => void;
 };
 
 export default function ComboboxInput<T>({
@@ -25,28 +25,23 @@ export default function ComboboxInput<T>({
   hasSelectedItem,
   inputProps,
   toggleButtonProps,
-  onClose,
+  onClear,
 }: ComboboxInputProps<T>) {
   return (
     <InputGroup>
-      <Input {...inputProps({ name, "aria-label": name && `${name} input` })} />
+      <Input {...inputProps({ name })} />
 
       <InputRightAddon paddingX="0px">
         <ButtonGroup size="md" variant="ghost" spacing="0">
           {hasSelectedItem && (
             <IconButton
-              aria-label={
-                name ? `${name} close-combobox-button` : "close-combobox-button"
-              }
+              aria-label="clear"
               icon={<SmallCloseIcon />}
-              onClick={onClose}
+              onClick={onClear}
             />
           )}
           <IconButton
-            {...toggleButtonProps({
-              name,
-              "aria-label": name && `${name} toggle-button`,
-            })}
+            {...toggleButtonProps({ "aria-label": "toggle menu" })}
             icon={
               <ChevronDownIcon
                 transform={isOpen ? "rotate(-180deg)" : undefined}

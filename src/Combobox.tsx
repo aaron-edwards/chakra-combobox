@@ -11,6 +11,8 @@ function defaultItemToString<T>(item: T) {
 type Props<T> = {
   items: T[];
   name: string;
+  onChange: (item?: T) => void;
+  selectedItem?: T | null;
   itemToString?: (item: T | null) => string;
   itemKey?: (item: T) => string;
   label?: (item: T) => React.ReactNode;
@@ -19,6 +21,7 @@ type Props<T> = {
 
 export default function Combobox<T>({
   name,
+  onChange,
   itemToString = defaultItemToString,
   itemKey = itemToString,
   label = itemToString,
@@ -41,6 +44,9 @@ export default function Combobox<T>({
     items,
     inputValue,
     itemToString,
+    selectedItem: props.selectedItem,
+    onSelectedItemChange: ({ selectedItem }) =>
+      onChange(selectedItem === null ? undefined : selectedItem),
     onInputValueChange: ({ inputValue: newValue }) =>
       setInputValue(newValue ?? ""),
   });
@@ -49,10 +55,11 @@ export default function Combobox<T>({
     <Box {...combobox.getComboboxProps({ name, "aria-label": name })}>
       <ComboboxInput
         isOpen={combobox.isOpen}
+        name={name}
         hasSelectedItem={combobox.selectedItem !== null}
         inputProps={combobox.getInputProps}
         toggleButtonProps={combobox.getToggleButtonProps}
-        onClose={combobox.reset}
+        onClear={combobox.reset}
       />
 
       <Box {...combobox.getMenuProps()}>
@@ -64,6 +71,7 @@ export default function Combobox<T>({
             marginTop="1"
             marginStart="0"
             listStyleType="none"
+            aria-label={name && `${name} list`}
           >
             {items.map((item, index) => {
               return (
