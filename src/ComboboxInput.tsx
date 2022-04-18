@@ -16,7 +16,9 @@ export type ComboboxInputProps<T> = {
   hasSelectedItem: boolean;
   inputProps: UseComboboxPropGetters<T>["getInputProps"];
   toggleButtonProps: UseComboboxPropGetters<T>["getToggleButtonProps"];
-  onClear: () => void;
+  clear: () => void;
+  onFocus: () => void;
+  placeholder?: string;
 };
 
 export default function ComboboxInput<T>({
@@ -25,11 +27,13 @@ export default function ComboboxInput<T>({
   hasSelectedItem,
   inputProps,
   toggleButtonProps,
-  onClear,
+  onFocus,
+  clear,
+  placeholder,
 }: ComboboxInputProps<T>) {
   return (
     <InputGroup>
-      <Input {...inputProps({ name })} />
+      <Input {...inputProps({ name, onFocus, placeholder })} />
 
       <InputRightAddon paddingX="0px">
         <ButtonGroup size="md" variant="ghost" spacing="0">
@@ -37,7 +41,7 @@ export default function ComboboxInput<T>({
             <IconButton
               aria-label="clear"
               icon={<SmallCloseIcon />}
-              onClick={onClear}
+              onClick={clear}
             />
           )}
           <IconButton

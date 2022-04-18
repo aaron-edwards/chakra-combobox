@@ -29,8 +29,8 @@ export const Template = (args) =>
     name="Rich label"
     args={{ 
       items: animals,
-      itemToString: (animal) => animal.name,
-      label: (animal) =>
+      itemToString: (animal) => animal?.name,
+      rowRenderer: ({ item: animal }) => 
         <Text as="span">
           {animal.emoji}
           {animal.name}

@@ -12,7 +12,7 @@ function setup(jsx: React.ReactElement) {
     getCombobox,
     getToggleButton: () =>
       within(getCombobox()).getByRole("button", { name: "toggle menu" }),
-    getList: () => within(getCombobox()).getByRole("list"),
+    getList: () => within(getCombobox()).getByRole("listbox"),
     getTextbox: () => within(getCombobox()).getByRole("textbox"),
   };
 }
