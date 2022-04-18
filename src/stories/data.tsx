@@ -16,7 +16,7 @@ export const animalTypes = [
   { type: "snake", emoji: "🐍", color: "gray" },
 ];
 
-type Animal = {
+export type Animal = {
   type: string;
   color: string;
   emoji: string;
@@ -33,4 +33,4 @@ function generateAnimal(): Animal {
   };
 }
 
-export const animals = Array.from({ length: 100_000 }, generateAnimal);
+export const animals = Array.from({ length: 20_000 }, generateAnimal);
