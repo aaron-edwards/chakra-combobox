@@ -64,9 +64,11 @@ export default function Combobox<T>({
     },
     onHighlightedIndexChange: (change) => {
       if (
-        change.highlightedIndex &&
+        props.virtual &&
+        change.highlightedIndex !== undefined &&
         change.isOpen &&
-        change.type.includes("__input_keydown_arrow")
+        (change.type === useCombobox.stateChangeTypes.InputKeyDownArrowDown ||
+          change.type === useCombobox.stateChangeTypes.InputKeyDownArrowUp)
       ) {
         setScrollIndex(change.highlightedIndex);
       } else {
