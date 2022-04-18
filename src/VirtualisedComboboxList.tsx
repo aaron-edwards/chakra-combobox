@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { UseComboboxPropGetters } from "downshift";
 import { useVirtual } from "react-virtual";
 import { Box, List, ListItem } from "@chakra-ui/react";
@@ -15,6 +15,7 @@ export type ComboboxMenuProps<T> = {
   maxHeight: number;
   highlightedIndex?: number;
   selectedItem?: T | null;
+  scrollIndex?: number;
 };
 
 export default function VirtualisedComboboxList<T>({
@@ -28,6 +29,7 @@ export default function VirtualisedComboboxList<T>({
   maxHeight,
   highlightedIndex,
   selectedItem,
+  scrollIndex,
 }: ComboboxMenuProps<T>) {
   const listRef = useRef<HTMLElement>(null);
   const rowVirtualizer = useVirtual({
@@ -36,19 +38,11 @@ export default function VirtualisedComboboxList<T>({
     overscan: 1,
     keyExtractor: (index) => itemKey(items[index]),
   });
-
   useEffect(() => {
-    if (highlightedIndex !== undefined) {
-      const start = rowVirtualizer.virtualItems[highlightedIndex]?.start;
-      if (start === undefined || start > maxHeight) {
-        rowVirtualizer.scrollToIndex(highlightedIndex);
-      }
+    if (scrollIndex && rowVirtualizer[scrollIndex] === undefined) {
+      rowVirtualizer.scrollToIndex(scrollIndex);
     }
-  }, [
-    highlightedIndex,
-    rowVirtualizer.virtualItems,
-    rowVirtualizer.scrollToIndex,
-  ]);
+  }, [scrollIndex]);
 
   return (
     <Box

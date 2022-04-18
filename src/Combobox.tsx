@@ -38,6 +38,8 @@ export default function Combobox<T>({
   ...props
 }: Props<T>) {
   const [inputValue, setInputValue] = useState("");
+  const [scrollIndex, setScrollIndex] = useState<number>();
+
   const items = useMemo(() => {
     if (inputValue) {
       const predicate = filter(inputValue);
@@ -58,6 +60,17 @@ export default function Combobox<T>({
     onIsOpenChange: ({ isOpen, selectedItem }) => {
       if (!isOpen && selectedItem) {
         setInputValue(itemToString(selectedItem));
+      }
+    },
+    onHighlightedIndexChange: (change) => {
+      if (
+        change.highlightedIndex &&
+        change.isOpen &&
+        change.type.includes("__input_keydown_arrow")
+      ) {
+        setScrollIndex(change.highlightedIndex);
+      } else {
+        setScrollIndex(undefined);
       }
     },
   });
@@ -108,6 +121,7 @@ export default function Combobox<T>({
           maxHeight={maxHeight}
           selectedItem={combobox.selectedItem}
           highlightedIndex={combobox.highlightedIndex}
+          scrollIndex={scrollIndex}
         />
       </Box>
     </Box>
