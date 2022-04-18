@@ -33,4 +33,4 @@ function generateAnimal(): Animal {
   };
 }
 
-export const animals = Array.from({ length: 1_000 }, generateAnimal);
+export const animals = Array.from({ length: 100_000 }, generateAnimal);

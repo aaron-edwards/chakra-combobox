@@ -13,6 +13,7 @@ export const animalNames = animals.map(c => c.name)
 export const Template = (args) => 
   <Combobox
     name="Combobox" 
+    items={allAnimals}
     onChange={action("item selected")}
     {...args} 
   />
@@ -42,7 +43,7 @@ export const Template = (args) =>
    <Story 
     name="Virtualised Rich label"
     args={{ 
-      items: allAnimals,
+      
       virtual: true,
       itemToString: (animal) => animal?.name,
       itemKey: (animal) => animal.id,

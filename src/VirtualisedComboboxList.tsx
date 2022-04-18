@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { UseComboboxPropGetters } from "downshift";
 import { useVirtual } from "react-virtual";
 import { Box, List, ListItem } from "@chakra-ui/react";
@@ -17,7 +17,7 @@ export type ComboboxMenuProps<T> = {
   selectedItem?: T | null;
 };
 
-export default function ComboboxMenu<T>({
+export default function VirtualisedComboboxList<T>({
   items,
   name,
   isOpen,
@@ -33,28 +33,34 @@ export default function ComboboxMenu<T>({
   const rowVirtualizer = useVirtual({
     size: items.length,
     parentRef: listRef,
-    overscan: 10,
+    overscan: 1,
+    keyExtractor: (index) => itemKey(items[index]),
   });
 
+  useEffect(() => {
+    if (highlightedIndex !== undefined) {
+      const start = rowVirtualizer.virtualItems[highlightedIndex]?.start;
+      if (start === undefined || start > maxHeight) {
+        rowVirtualizer.scrollToIndex(highlightedIndex);
+      }
+    }
+  }, [
+    highlightedIndex,
+    rowVirtualizer.virtualItems,
+    rowVirtualizer.scrollToIndex,
+  ]);
+
   return (
-    <Box pos="relative" zIndex="1000">
+    <Box
+      ref={listRef}
+      zIndex="1000"
+      height={isOpen ? maxHeight : 0}
+      overflow="auto"
+    >
       <List
-        {...getMenuProps({ name, ref: listRef })}
-        borderRadius="base"
-        border={isOpen ? "1px solid" : "none"}
+        {...getMenuProps({ name })}
+        pos="relative"
         height={`${rowVirtualizer.totalSize}px`}
-        borderColor="gray.200"
-        marginTop="1"
-        marginStart="0"
-        listStyleType="none"
-        aria-label={name && `${name} list`}
-        maxH={maxHeight}
-        zIndex="1000"
-        position="relative"
-        marginX="0px"
-        width="100%"
-        overflowY="auto"
-        background="white"
       >
         {isOpen &&
           rowVirtualizer.virtualItems.map((virtualRow) => {
@@ -64,6 +70,7 @@ export default function ComboboxMenu<T>({
             return (
               <ListItem
                 key={itemKey(item)}
+                ref={virtualRow.measureRef}
                 bg={highlighted && "gray.200"}
                 fontWeight={selected && "bold"}
                 pos="absolute"

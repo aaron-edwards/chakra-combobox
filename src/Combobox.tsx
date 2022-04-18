@@ -3,8 +3,8 @@ import { useCombobox } from "downshift";
 import React, { useCallback, useMemo, useState } from "react";
 import escapeRegExp from "lodash.escaperegexp";
 import ComboboxInput from "./ComboboxInput";
-import ComboboxMenu from "./ComboboxMenu";
-import VirtualisedComboboxMenu from "./VirtualisedComboboxMenu";
+import ComboboxList from "./ComboboxList";
+import VirtualisedComboboxList from "./VirtualisedComboboxList";
 import { RowRenderer } from "./types";
 
 function defaultItemToString<T>(item: T) {
@@ -69,6 +69,8 @@ export default function Combobox<T>({
     }
   }, [combobox.isOpen, setInputValue, combobox.openMenu]);
 
+  const MenuComponent = props.virtual ? VirtualisedComboboxList : ComboboxList;
+
   return (
     <Box {...combobox.getComboboxProps({ name, "aria-label": name })}>
       <ComboboxInput
@@ -87,8 +89,15 @@ export default function Combobox<T>({
         }
         clear={combobox.reset}
       />
-      {props.virtual ? (
-        <VirtualisedComboboxMenu
+      <Box
+        pos="relative"
+        borderRadius="base"
+        border={combobox.isOpen ? "1px solid" : "none"}
+        borderColor="gray.200"
+        marginTop={combobox.isOpen ? 1 : undefined}
+        marginStart="0"
+      >
+        <MenuComponent
           name={name}
           items={items}
           itemKey={itemKey}
@@ -100,20 +109,7 @@ export default function Combobox<T>({
           selectedItem={combobox.selectedItem}
           highlightedIndex={combobox.highlightedIndex}
         />
-      ) : (
-        <ComboboxMenu
-          name={name}
-          items={items}
-          itemKey={itemKey}
-          rowRenderer={rowRenderer}
-          isOpen={combobox.isOpen}
-          getItemProps={combobox.getItemProps}
-          getMenuProps={combobox.getMenuProps}
-          maxHeight={maxHeight}
-          selectedItem={combobox.selectedItem}
-          highlightedIndex={combobox.highlightedIndex}
-        />
-      )}
+      </Box>
     </Box>
   );
 }
