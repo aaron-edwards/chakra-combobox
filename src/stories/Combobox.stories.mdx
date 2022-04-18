@@ -39,4 +39,20 @@ export const Template = (args) =>
     }}>
     {Template.bind({})}
    </Story>
+   <Story 
+    name="Virtualised Rich label"
+    args={{ 
+      items: allAnimals,
+      virtual: true,
+      itemToString: (animal) => animal?.name,
+      itemKey: (animal) => animal.id,
+      rowRenderer: ({ item: animal }) => 
+        <Text as="span">
+          {animal.emoji}
+          {animal.name}
+          <Text as="sup" color={animal.color} padding="2">{animal.type}</Text>
+        </Text>
+    }}>
+    {Template.bind({})}
+   </Story>
 </Canvas>

@@ -21,6 +21,7 @@ type Animal = {
   color: string;
   emoji: string;
   name: string;
+  id: string;
 };
 
 function generateAnimal(): Animal {
@@ -28,7 +29,8 @@ function generateAnimal(): Animal {
   return {
     name: faker.animal[type.type](),
     ...type,
+    id: faker.datatype.uuid(),
   };
 }
 
-export const animals = Array.from({ length: 10_000 }, generateAnimal);
+export const animals = Array.from({ length: 1_000 }, generateAnimal);

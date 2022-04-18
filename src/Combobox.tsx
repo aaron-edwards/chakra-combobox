@@ -4,6 +4,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import escapeRegExp from "lodash.escaperegexp";
 import ComboboxInput from "./ComboboxInput";
 import ComboboxMenu from "./ComboboxMenu";
+import VirtualisedComboboxMenu from "./VirtualisedComboboxMenu";
 import { RowRenderer } from "./types";
 
 function defaultItemToString<T>(item: T) {
@@ -20,6 +21,7 @@ type Props<T> = {
   rowRenderer?: RowRenderer<T>;
   filter?: (inputValue: string) => (item: T) => boolean;
   maxHeight?: number;
+  virtual?: boolean;
 };
 
 export default function Combobox<T>({
@@ -85,18 +87,33 @@ export default function Combobox<T>({
         }
         clear={combobox.reset}
       />
-      <ComboboxMenu
-        name={name}
-        items={items}
-        itemKey={itemKey}
-        rowRenderer={rowRenderer}
-        isOpen={combobox.isOpen}
-        getItemProps={combobox.getItemProps}
-        getMenuProps={combobox.getMenuProps}
-        maxHeight={maxHeight}
-        selectedItem={combobox.selectedItem}
-        highlightedIndex={combobox.highlightedIndex}
-      />
+      {props.virtual ? (
+        <VirtualisedComboboxMenu
+          name={name}
+          items={items}
+          itemKey={itemKey}
+          rowRenderer={rowRenderer}
+          isOpen={combobox.isOpen}
+          getItemProps={combobox.getItemProps}
+          getMenuProps={combobox.getMenuProps}
+          maxHeight={maxHeight}
+          selectedItem={combobox.selectedItem}
+          highlightedIndex={combobox.highlightedIndex}
+        />
+      ) : (
+        <ComboboxMenu
+          name={name}
+          items={items}
+          itemKey={itemKey}
+          rowRenderer={rowRenderer}
+          isOpen={combobox.isOpen}
+          getItemProps={combobox.getItemProps}
+          getMenuProps={combobox.getMenuProps}
+          maxHeight={maxHeight}
+          selectedItem={combobox.selectedItem}
+          highlightedIndex={combobox.highlightedIndex}
+        />
+      )}
     </Box>
   );
 }
