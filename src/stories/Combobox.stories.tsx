@@ -3,11 +3,11 @@ import React from "react";
 
 import { ComponentMeta } from "@storybook/react";
 
-import { Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import escapeRegExp from "lodash.escaperegexp";
 import { Combobox } from "..";
 
-import { Animal, animals } from "./data";
+import { Animal, animals, people, Person } from "./data";
 import { select, select2ndBearInteraction } from "./actions";
 
 export default {
@@ -40,20 +40,20 @@ function Template(args) {
 }
 
 export const BasicCombobox = Template.bind({});
-BasicCombobox.args = { items: animals.slice(0, 20).map((a) => a.name) };
+BasicCombobox.args = { items: animals.map((a) => a.name) };
 
 export const RichTextCombobox = Template.bind({});
 RichTextCombobox.args = {
-  items: animals.slice(0, 20),
+  items: animals,
   itemToString: (animal) => animal?.name,
   rowRenderer: ({ item: animal }) => (
-    <Text as="span">
-      {animal.emoji}
-      {animal.name}
-      <Text as="sup" color={animal.color} padding="2">
+    <HStack>
+      <Text>{animal.emoji}</Text>
+      <Text>{animal.name}</Text>
+      <Text as="sup" color={animal.color}>
         {animal.type}
       </Text>
-    </Text>
+    </HStack>
   ),
 };
 
@@ -75,8 +75,26 @@ FilterActionCombobox.play = select("bear", 1, 250);
 
 export const VirtualCombobox = Template.bind({});
 VirtualCombobox.args = {
-  ...CustomFilter.args,
-  items: animals,
-  itemKey: (animal) => animal.id,
+  items: people,
+  itemKey: (p) => p.id,
+  itemToString: (p) => p?.name,
   virtual: true,
+  filter: (input: string) => {
+    const res = input.split(" ").map((s) => new RegExp(escapeRegExp(s), "i"));
+    return (item: Person) => {
+      const string = `${item.name} ${item.color}`;
+      return res.every((re) => string.match(re));
+    };
+  },
+  rowRenderer: ({ item }: { item: Person }) => (
+    <HStack>
+      <Text>{item.name}</Text>
+      <Box
+        display="inline-block"
+        width="15px"
+        height="15px"
+        backgroundColor={item.color}
+      />
+    </HStack>
+  ),
 };

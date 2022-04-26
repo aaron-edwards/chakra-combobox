@@ -33,4 +33,15 @@ function generateAnimal(): Animal {
   };
 }
 
-export const animals = Array.from({ length: 20_000 }, generateAnimal);
+export const animals = Array.from({ length: 25 }, generateAnimal);
+
+export type Person = {
+  id: string;
+  name: string;
+  color: string;
+};
+export const people: Person[] = Array.from({ length: 20_000 }, () => ({
+  id: faker.datatype.uuid(),
+  name: faker.name.findName(),
+  color: faker.internet.color(),
+}));
