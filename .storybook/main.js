@@ -11,6 +11,7 @@ module.exports = {
     "@storybook/addon-interactions",
     "storybook-addon-performance/register",
     "@storybook/addon-a11y",
+    '@storybook/addon-toolbars'
   ],
   "framework": "@storybook/react",
   features: {
