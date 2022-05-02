@@ -55,6 +55,7 @@ export default function VirtualisedComboboxList<T>({
       borderRadius="base"
       border={isOpen ? "1px solid" : "none"}
       borderColor={colorMode === "dark" ? "whiteAlpha.200" : "gray.200"}
+      cursor="pointer"
     >
       <List
         {...getMenuProps({ name })}

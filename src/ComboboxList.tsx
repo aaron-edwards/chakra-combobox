@@ -42,6 +42,7 @@ export default function ComboboxList<T>({
       borderRadius="base"
       border={isOpen ? "1px solid" : "none"}
       borderColor={colorMode === "dark" ? "whiteAlpha.200" : "gray.200"}
+      cursor="pointer"
     >
       {isOpen &&
         items.map((item, index) => {
