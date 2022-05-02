@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { UseComboboxPropGetters } from "downshift";
 import { useVirtual } from "react-virtual";
-import { Box, List, ListItem } from "@chakra-ui/react";
+import { Box, List, ListItem, useChakra } from "@chakra-ui/react";
 import { RowRenderer } from "./types";
 
 export type ComboboxMenuProps<T> = {
@@ -43,13 +43,18 @@ export default function VirtualisedComboboxList<T>({
       rowVirtualizer.scrollToIndex(scrollIndex);
     }
   }, [scrollIndex]);
+  const { colorMode } = useChakra();
 
   return (
     <Box
       ref={listRef}
       zIndex="1000"
+      display={isOpen ? undefined : "none"}
       height={isOpen ? maxHeight : 0}
       overflow="auto"
+      borderRadius="base"
+      border={isOpen ? "1px solid" : "none"}
+      borderColor={colorMode === "dark" ? "whiteAlpha.200" : "gray.200"}
     >
       <List
         {...getMenuProps({ name })}
@@ -65,7 +70,10 @@ export default function VirtualisedComboboxList<T>({
               <ListItem
                 key={itemKey(item)}
                 ref={virtualRow.measureRef}
-                bg={highlighted && "gray.200"}
+                bg={
+                  highlighted &&
+                  (colorMode === "dark" ? "whiteAlpha.100" : "gray.100")
+                }
                 fontWeight={selected && "bold"}
                 pos="absolute"
                 top={0}

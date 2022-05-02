@@ -106,9 +106,6 @@ export default function Combobox<T>({
       />
       <Box
         pos="relative"
-        borderRadius="base"
-        border={combobox.isOpen ? "1px solid" : "none"}
-        borderColor="gray.200"
         marginTop={combobox.isOpen ? 1 : undefined}
         marginStart="0"
       >

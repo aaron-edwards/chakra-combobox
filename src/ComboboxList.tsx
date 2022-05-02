@@ -1,6 +1,6 @@
 import React from "react";
 import { UseComboboxPropGetters } from "downshift";
-import { List, ListItem } from "@chakra-ui/react";
+import { List, ListItem, useChakra } from "@chakra-ui/react";
 import { RowRenderer } from "./types";
 
 export type ComboboxMenuProps<T> = {
@@ -28,6 +28,7 @@ export default function ComboboxList<T>({
   highlightedIndex,
   selectedItem,
 }: ComboboxMenuProps<T>) {
+  const { colorMode } = useChakra();
   return (
     <List
       {...getMenuProps({ name })}
@@ -38,7 +39,9 @@ export default function ComboboxList<T>({
       marginX="0px"
       width="100%"
       overflowY="scroll"
-      background="white"
+      borderRadius="base"
+      border={isOpen ? "1px solid" : "none"}
+      borderColor={colorMode === "dark" ? "whiteAlpha.200" : "gray.200"}
     >
       {isOpen &&
         items.map((item, index) => {
@@ -47,7 +50,10 @@ export default function ComboboxList<T>({
           return (
             <ListItem
               key={itemKey(item)}
-              bg={highlighted && "gray.200"}
+              bg={
+                highlighted &&
+                (colorMode === "dark" ? "whiteAlpha.100" : "gray.100")
+              }
               fontWeight={selected && "bold"}
               {...getItemProps({ item, index })}
             >
