@@ -69,6 +69,15 @@ CustomFilter.args = {
   },
 };
 
+export function AutomaticPlacement(args) {
+  return (
+    <Box h={400} display="flex" flexDirection="column-reverse">
+      <Template {...args} />
+    </Box>
+  );
+}
+AutomaticPlacement.args = { ...RichTextCombobox.args };
+
 export const FilterActionCombobox = Template.bind({});
 FilterActionCombobox.args = RichTextCombobox.args;
 FilterActionCombobox.play = select("bear", 1, 250);

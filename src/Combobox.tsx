@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, usePopper } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
 import React, { useCallback, useMemo, useState } from "react";
 import escapeRegExp from "lodash.escaperegexp";
@@ -84,10 +84,19 @@ export default function Combobox<T>({
     }
   }, [combobox.isOpen, setInputValue, combobox.openMenu]);
 
+  const { referenceRef, getPopperProps } = usePopper({
+    matchWidth: true,
+  });
+
   const MenuComponent = props.virtual ? VirtualisedComboboxList : ComboboxList;
 
   return (
-    <Box {...combobox.getComboboxProps({ name, "aria-label": name })}>
+    <Box
+      {...combobox.getComboboxProps({
+        name,
+        "aria-label": name,
+      })}
+    >
       <ComboboxInput
         isOpen={combobox.isOpen}
         name={name}
@@ -103,12 +112,10 @@ export default function Combobox<T>({
             : undefined
         }
         clear={combobox.reset}
+        ref={referenceRef}
       />
-      <Box
-        pos="relative"
-        marginTop={combobox.isOpen ? 1 : undefined}
-        marginStart="0"
-      >
+
+      <Box {...getPopperProps()}>
         <MenuComponent
           name={name}
           items={items}

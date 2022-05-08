@@ -50,7 +50,7 @@ export default function VirtualisedComboboxList<T>({
       ref={listRef}
       zIndex="1000"
       display={isOpen ? undefined : "none"}
-      height={isOpen ? maxHeight : 0}
+      maxHeight={isOpen ? maxHeight : 0}
       overflow="auto"
       borderRadius="base"
       border={isOpen ? "1px solid" : "none"}

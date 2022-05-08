@@ -14,6 +14,7 @@ export type ComboboxMenuProps<T> = {
   maxHeight: number;
   highlightedIndex?: number;
   selectedItem?: T | null;
+  scrollIndex?: number;
 };
 
 export default function ComboboxList<T>({

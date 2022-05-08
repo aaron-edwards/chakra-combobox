@@ -20,19 +20,21 @@ export type ComboboxInputProps<T> = {
   onFocus: () => void;
   placeholder?: string;
 };
-
-export default function ComboboxInput<T>({
-  isOpen,
-  name,
-  hasSelectedItem,
-  inputProps,
-  toggleButtonProps,
-  onFocus,
-  clear,
-  placeholder,
-}: ComboboxInputProps<T>) {
+function ComboboxInput<T>(
+  {
+    isOpen,
+    name,
+    hasSelectedItem,
+    inputProps,
+    toggleButtonProps,
+    onFocus,
+    clear,
+    placeholder,
+  }: ComboboxInputProps<T>,
+  ref: React.ForwardedRef<HTMLElement>
+) {
   return (
-    <InputGroup>
+    <InputGroup ref={ref}>
       <Input {...inputProps({ name, onFocus, placeholder })} />
 
       <InputRightAddon paddingX="0px">
@@ -58,3 +60,5 @@ export default function ComboboxInput<T>({
     </InputGroup>
   );
 }
+
+export default React.forwardRef(ComboboxInput);
