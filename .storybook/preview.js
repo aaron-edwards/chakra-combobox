@@ -1,8 +1,7 @@
 import {addDecorator} from '@storybook/react'
 
 import React, { useEffect } from 'react'
-import {ChakraProvider, CSSReset, useChakra, Box, Checkbox} from '@chakra-ui/react'
-import theme from '../src/theme'
+import {ChakraProvider, CSSReset, useChakra} from '@chakra-ui/react'
 import { withPerformance } from "storybook-addon-performance"
 
 export const parameters = {
@@ -40,7 +39,7 @@ const ThemeSwitcher = ({mode}) => {
 const withChakra = (StoryFn, context) => (
   <React.StrictMode>
     <CSSReset/>
-    <ChakraProvider theme={theme}>
+    <ChakraProvider>
       <ThemeSwitcher mode={context.globals.theme}/>
       <StoryFn />
     </ChakraProvider>

@@ -2,9 +2,9 @@ import { Box, usePopper } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
 import React, { useCallback, useMemo, useState } from "react";
 import escapeRegExp from "lodash.escaperegexp";
-import ComboboxInput from "./ComboboxInput";
-import ComboboxList from "./ComboboxList";
-import VirtualisedComboboxList from "./VirtualisedComboboxList";
+import ComboboxInput from "./Input/ComboboxInput";
+import ComboboxList from "./List/ComboboxList";
+import VirtualisedComboboxList from "./List/VirtualisedComboboxList";
 import { RowRenderer } from "./types";
 
 function defaultItemToString<T>(item: T) {

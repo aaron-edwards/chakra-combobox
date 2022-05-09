@@ -1,7 +1,7 @@
 import React from "react";
 import { UseComboboxPropGetters } from "downshift";
 import { List, ListItem, useChakra } from "@chakra-ui/react";
-import { RowRenderer } from "./types";
+import { RowRenderer } from "../types";
 
 export type ComboboxMenuProps<T> = {
   name: string;
