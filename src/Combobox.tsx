@@ -5,24 +5,18 @@ import escapeRegExp from "lodash.escaperegexp";
 import ComboboxInput from "./Input/ComboboxInput";
 import ComboboxList from "./List/ComboboxList";
 import VirtualisedComboboxList from "./List/VirtualisedComboboxList";
-import { RowRenderer } from "./types";
+import { ComboboxProps } from "./types";
 
 function defaultItemToString<T>(item: T) {
   return typeof item === "string" ? item : JSON.stringify(item);
 }
 
-type Props<T> = {
-  items: T[];
-  name: string;
-  onChange: (item?: T) => void;
-  selectedItem?: T | null;
-  itemToString?: (item: T | null) => string;
-  itemKey?: (item: T) => string;
-  rowRenderer?: RowRenderer<T>;
-  filter?: (inputValue: string) => (item: T) => boolean;
-  maxHeight?: number;
-  virtual?: boolean;
-};
+function createDefaultFilter<T>(itemToString: (item: T) => string) {
+  return (input: string) => {
+    const re = new RegExp(escapeRegExp(input), "i");
+    return (item: T) => !!itemToString(item).match(re);
+  };
+}
 
 export default function Combobox<T>({
   name,
@@ -30,13 +24,10 @@ export default function Combobox<T>({
   itemToString = defaultItemToString,
   itemKey = itemToString,
   rowRenderer = (p) => itemToString(p.item),
-  filter = (input: string) => {
-    const re = new RegExp(escapeRegExp(input), "i");
-    return (item: T) => !!itemToString(item).match(re);
-  },
+  filter = createDefaultFilter(itemToString),
   maxHeight = 250,
   ...props
-}: Props<T>) {
+}: ComboboxProps<T>) {
   const [inputValue, setInputValue] = useState("");
   const [scrollIndex, setScrollIndex] = useState<number>();
 
@@ -100,7 +91,7 @@ export default function Combobox<T>({
       <ComboboxInput
         isOpen={combobox.isOpen}
         name={name}
-        hasSelectedItem={
+        showClear={
           combobox.selectedItem !== null && combobox.selectedItem !== undefined
         }
         inputProps={combobox.getInputProps}

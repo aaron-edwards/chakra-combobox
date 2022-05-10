@@ -13,7 +13,7 @@ import { ChevronDownIcon, SmallCloseIcon } from "@chakra-ui/icons";
 export type ComboboxInputProps<T> = {
   isOpen: Boolean;
   name?: string;
-  hasSelectedItem: boolean;
+  showClear: boolean;
   inputProps: UseComboboxPropGetters<T>["getInputProps"];
   toggleButtonProps: UseComboboxPropGetters<T>["getToggleButtonProps"];
   clear: () => void;
@@ -24,7 +24,7 @@ function ComboboxInput<T>(
   {
     isOpen,
     name,
-    hasSelectedItem,
+    showClear,
     inputProps,
     toggleButtonProps,
     onFocus,
@@ -39,7 +39,7 @@ function ComboboxInput<T>(
 
       <InputRightAddon paddingX="0px">
         <ButtonGroup size="md" variant="ghost" spacing="0">
-          {hasSelectedItem && (
+          {showClear && (
             <IconButton
               aria-label="clear"
               icon={<SmallCloseIcon />}
