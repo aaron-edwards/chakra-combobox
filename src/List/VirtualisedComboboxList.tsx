@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { UseComboboxPropGetters } from "downshift";
 import { useVirtual } from "react-virtual";
-import { Box, List, ListItem, useChakra } from "@chakra-ui/react";
+import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/react";
 import { RowRenderer } from "../types";
 
 export type ComboboxMenuProps<T> = {
@@ -43,19 +43,21 @@ export default function VirtualisedComboboxList<T>({
       rowVirtualizer.scrollToIndex(scrollIndex);
     }
   }, [scrollIndex]);
-  const { colorMode } = useChakra();
+  const borderColor = useColorModeValue("gray.200", "whiteAlpha.200");
+  const bg = useColorModeValue("white", "gray.800");
+  const highlightBg = useColorModeValue("gray.100", "whiteAlpha.100");
 
   return (
     <Box
       ref={listRef}
-      zIndex="1000"
       display={isOpen ? undefined : "none"}
       maxHeight={isOpen ? maxHeight : 0}
       overflow="auto"
       borderRadius="base"
       border={isOpen ? "1px solid" : "none"}
-      borderColor={colorMode === "dark" ? "whiteAlpha.200" : "gray.200"}
+      borderColor={borderColor}
       cursor="pointer"
+      bg={bg}
     >
       <List
         {...getMenuProps({ name })}
@@ -71,10 +73,7 @@ export default function VirtualisedComboboxList<T>({
               <ListItem
                 key={itemKey(item)}
                 ref={virtualRow.measureRef}
-                bg={
-                  highlighted &&
-                  (colorMode === "dark" ? "whiteAlpha.100" : "gray.100")
-                }
+                bg={highlighted && highlightBg}
                 fontWeight={selected && "bold"}
                 pos="absolute"
                 top={0}

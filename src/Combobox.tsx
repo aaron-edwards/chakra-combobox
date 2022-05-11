@@ -106,7 +106,7 @@ export default function Combobox<T>({
         ref={referenceRef}
       />
 
-      <Box {...getPopperProps()}>
+      <Box {...getPopperProps()} zIndex="popover">
         <MenuComponent
           name={name}
           items={items}

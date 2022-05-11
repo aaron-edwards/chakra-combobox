@@ -1,6 +1,6 @@
 import React from "react";
 import { UseComboboxPropGetters } from "downshift";
-import { List, ListItem, useChakra } from "@chakra-ui/react";
+import { List, ListItem, useColorModeValue } from "@chakra-ui/react";
 import { RowRenderer } from "../types";
 
 export type ComboboxMenuProps<T> = {
@@ -29,21 +29,23 @@ export default function ComboboxList<T>({
   highlightedIndex,
   selectedItem,
 }: ComboboxMenuProps<T>) {
-  const { colorMode } = useChakra();
+  const borderColor = useColorModeValue("gray.200", "whiteAlpha.200");
+  const bg = useColorModeValue("white", "gray.800");
+  const highlightBg = useColorModeValue("gray.100", "whiteAlpha.100");
   return (
     <List
       {...getMenuProps({ name })}
       listStyleType="none"
       aria-label={name && `${name} list`}
       maxH={maxHeight}
-      zIndex="1000"
       marginX="0px"
       width="100%"
       overflowY="scroll"
       borderRadius="base"
       border={isOpen ? "1px solid" : "none"}
-      borderColor={colorMode === "dark" ? "whiteAlpha.200" : "gray.200"}
+      borderColor={borderColor}
       cursor="pointer"
+      bg={bg}
     >
       {isOpen &&
         items.map((item, index) => {
@@ -52,10 +54,7 @@ export default function ComboboxList<T>({
           return (
             <ListItem
               key={itemKey(item)}
-              bg={
-                highlighted &&
-                (colorMode === "dark" ? "whiteAlpha.100" : "gray.100")
-              }
+              bg={highlighted && highlightBg}
               fontWeight={selected && "bold"}
               {...getItemProps({ item, index })}
             >
