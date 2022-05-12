@@ -11,7 +11,7 @@ export const select =
   };
 
 export const select2ndBearInteraction: PublicInteractionTask = {
-  name: "Select 2nd Bear",
-  description: 'Filters by "bear" and selects the 2nd',
-  run: async ({ container }) => select("bear", 1)({ canvasElement: container }),
+  name: "Select 2nd Bea",
+  description: 'Filters by "bea" and selects the 2nd',
+  run: async ({ container }) => select("bea", 1)({ canvasElement: container }),
 };

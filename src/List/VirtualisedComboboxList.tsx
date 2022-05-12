@@ -23,7 +23,7 @@ export default function VirtualisedComboboxList<T>({
   name,
   isOpen,
   itemKey,
-  rowRenderer,
+  rowRenderer: Row,
   getMenuProps,
   getItemProps,
   maxHeight,
@@ -35,7 +35,7 @@ export default function VirtualisedComboboxList<T>({
   const rowVirtualizer = useVirtual({
     size: items.length,
     parentRef: listRef,
-    overscan: 1,
+    overscan: 10,
     keyExtractor: (index) => itemKey(items[index]),
   });
   useEffect(() => {
@@ -71,8 +71,7 @@ export default function VirtualisedComboboxList<T>({
             const selected = selectedItem === item;
             return (
               <ListItem
-                key={itemKey(item)}
-                ref={virtualRow.measureRef}
+                key={virtualRow.index}
                 bg={highlighted && highlightBg}
                 fontWeight={selected && "bold"}
                 pos="absolute"
@@ -86,7 +85,11 @@ export default function VirtualisedComboboxList<T>({
                   ref: virtualRow.measureRef,
                 })}
               >
-                {rowRenderer({ item, highlighted, selected })}
+                <Row
+                  item={item}
+                  highlighted={highlighted}
+                  selected={selected}
+                />
               </ListItem>
             );
           })}

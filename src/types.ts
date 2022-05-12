@@ -1,10 +1,12 @@
 import React from "react";
 
-export type RowRenderer<T> = (props: {
+export type RowProps<T> = {
   item: T;
   highlighted?: boolean;
   selected?: boolean;
-}) => React.ReactNode;
+};
+
+export type RowRenderer<T> = (props: RowProps<T>) => React.ReactElement;
 
 export type ComboboxProps<T> = {
   items: T[];

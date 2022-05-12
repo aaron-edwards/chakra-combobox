@@ -82,6 +82,21 @@ export const FilterActionCombobox = Template.bind({});
 FilterActionCombobox.args = RichTextCombobox.args;
 FilterActionCombobox.play = select("bear", 1, 250);
 
+function Row({ item }: { item: Person }) {
+  return (
+    <HStack>
+      <Text>{item.name}</Text>
+      <Box
+        display="inline-block"
+        width="15px"
+        height="15px"
+        backgroundColor={item.color}
+      />
+    </HStack>
+  );
+}
+const MemoRow = React.memo(Row);
+
 export const VirtualCombobox = Template.bind({});
 VirtualCombobox.args = {
   items: people,
@@ -95,15 +110,5 @@ VirtualCombobox.args = {
       return res.every((re) => string.match(re));
     };
   },
-  rowRenderer: ({ item }: { item: Person }) => (
-    <HStack>
-      <Text>{item.name}</Text>
-      <Box
-        display="inline-block"
-        width="15px"
-        height="15px"
-        backgroundColor={item.color}
-      />
-    </HStack>
-  ),
+  rowRenderer: MemoRow,
 };

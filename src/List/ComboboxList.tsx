@@ -22,7 +22,7 @@ export default function ComboboxList<T>({
   name,
   isOpen,
   itemKey,
-  rowRenderer,
+  rowRenderer: Row,
   getMenuProps,
   getItemProps,
   maxHeight,
@@ -58,7 +58,7 @@ export default function ComboboxList<T>({
               fontWeight={selected && "bold"}
               {...getItemProps({ item, index })}
             >
-              {rowRenderer({ item, highlighted, selected })}
+              <Row item={item} highlighted={highlighted} selected={selected} />
             </ListItem>
           );
         })}

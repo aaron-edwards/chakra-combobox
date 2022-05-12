@@ -23,7 +23,7 @@ export default function Combobox<T>({
   onChange,
   itemToString = defaultItemToString,
   itemKey = itemToString,
-  rowRenderer = (p) => itemToString(p.item),
+  rowRenderer = (p) => <span>{itemToString(p.item)}</span>,
   filter = createDefaultFilter(itemToString),
   maxHeight = 250,
   ...props
