@@ -20,6 +20,7 @@ function createDefaultFilter<T>(itemToString: (item: T) => string) {
 
 export default function Combobox<T>({
   name,
+  value,
   onChange,
   itemToString = defaultItemToString,
   itemKey = itemToString,
@@ -43,7 +44,7 @@ export default function Combobox<T>({
     items,
     inputValue,
     itemToString,
-    selectedItem: props.selectedItem,
+    selectedItem: value,
     onSelectedItemChange: ({ selectedItem }) =>
       onChange(selectedItem === null ? undefined : selectedItem),
     onInputValueChange: ({ inputValue: newValue }) =>

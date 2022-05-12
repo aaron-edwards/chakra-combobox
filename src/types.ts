@@ -12,7 +12,7 @@ export type ComboboxProps<T> = {
   items: T[];
   name: string;
   onChange: (item?: T) => void;
-  selectedItem?: T | null;
+  value?: T | null;
   itemToString?: (item: T | null) => string;
   itemKey?: (item: T) => string;
   rowRenderer?: RowRenderer<T>;

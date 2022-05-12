@@ -69,9 +69,7 @@ describe("<Combobox />", () => {
 
     describe("controlled component", () => {
       it("should display selected item", () => {
-        const { getTextbox } = setup(
-          <Combobox {...props} selectedItem="Cat" />
-        );
+        const { getTextbox } = setup(<Combobox {...props} value="Cat" />);
         expect(getTextbox()).toHaveValue("Cat");
       });
 
