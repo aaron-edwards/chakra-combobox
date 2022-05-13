@@ -3,23 +3,27 @@ import React, { useState } from "react";
 
 import { ComponentMeta } from "@storybook/react";
 
-import { Box, HStack, Text } from "@chakra-ui/react";
+import { Box, Checkbox, HStack, Text } from "@chakra-ui/react";
 import escapeRegExp from "lodash.escaperegexp";
-import { Combobox } from "..";
+import { RowProps } from "src/types";
+import MultiSelectCombobox from "../MultiSelectCombobox";
 
 import { Animal, animals, people, Person } from "./data";
 import { select, select2ndBearInteraction } from "./actions";
 
 export default {
-  title: "Combobox",
-  component: Combobox,
+  title: "MultiSelect Combobox",
+  component: MultiSelectCombobox,
   args: {
     items: [],
-    name: "Combobox",
+    name: "MultiSelect Combobox",
   },
   argTypes: {
     items: {
       control: false,
+    },
+    value: {
+      constole: false,
     },
     selectedItem: {
       control: false,
@@ -33,12 +37,12 @@ export default {
       interactions: [select2ndBearInteraction],
     },
   },
-} as ComponentMeta<typeof Combobox>;
+} as ComponentMeta<typeof MultiSelectCombobox>;
 
 function Template({ onChange, ...args }: any) {
-  const [value, setValue] = useState<any>(null);
+  const [value, setValue] = useState<any>();
   return (
-    <Combobox
+    <MultiSelectCombobox
       {...args}
       value={value}
       onChange={(item) => {
@@ -48,32 +52,33 @@ function Template({ onChange, ...args }: any) {
     />
   );
 }
-
-export const BasicCombobox = Template.bind({});
-BasicCombobox.args = {
+export const BasicMultiSelectCombobox = Template.bind({});
+BasicMultiSelectCombobox.args = {
   items: animals.map((a) => a.name),
   label: "Animals",
 };
 
-export const RichTextCombobox = Template.bind({});
-RichTextCombobox.args = {
+export const RichTextMultiSelectCombobox = Template.bind({});
+RichTextMultiSelectCombobox.args = {
   items: animals,
   label: "Animals",
   itemToString: (animal) => animal?.name,
-  rowRenderer: ({ item: animal }) => (
-    <HStack>
-      <Text>{animal.emoji}</Text>
-      <Text>{animal.name}</Text>
-      <Text as="sup" color={animal.color}>
-        {animal.type}
-      </Text>
-    </HStack>
+  rowRenderer: ({ item: animal, selected }) => (
+    <Checkbox isChecked={selected}>
+      <HStack>
+        <Text>{animal.emoji}</Text>
+        <Text>{animal.name}</Text>
+        <Text as="sup" color={animal.color}>
+          {animal.type}
+        </Text>
+      </HStack>
+    </Checkbox>
   ),
 };
 
 export const CustomFilter = Template.bind({});
 CustomFilter.args = {
-  ...RichTextCombobox.args,
+  ...RichTextMultiSelectCombobox.args,
   filter: (input: string) => {
     const res = input.split(" ").map((s) => new RegExp(escapeRegExp(s), "i"));
     return (item: Animal) => {
@@ -91,23 +96,25 @@ export function AutomaticPlacement(args) {
     </Box>
   );
 }
-AutomaticPlacement.args = { ...RichTextCombobox.args };
+AutomaticPlacement.args = { ...RichTextMultiSelectCombobox.args };
 
 export const FilterActionCombobox = Template.bind({});
-FilterActionCombobox.args = RichTextCombobox.args;
+FilterActionCombobox.args = RichTextMultiSelectCombobox.args;
 FilterActionCombobox.play = select("bear", 1, 250);
 
-function Row({ item }: { item: Person }) {
+function Row({ item, selected }: RowProps<Person>) {
   return (
-    <HStack>
-      <Text>{item.name}</Text>
-      <Box
-        display="inline-block"
-        width="15px"
-        height="15px"
-        backgroundColor={item.color}
-      />
-    </HStack>
+    <Checkbox isChecked={selected}>
+      <HStack>
+        <Text>{item.name}</Text>
+        <Box
+          display="inline-block"
+          width="15px"
+          height="15px"
+          backgroundColor={item.color}
+        />
+      </HStack>
+    </Checkbox>
   );
 }
 const MemoRow = React.memo(Row);
@@ -116,8 +123,8 @@ export const VirtualCombobox = Template.bind({});
 VirtualCombobox.args = {
   items: people,
   label: "People",
-  itemKey: (p: Person) => p.id,
-  itemToString: (p: Person) => p?.name,
+  itemKey: (p) => p.id,
+  itemToString: (p) => p?.name,
   virtual: true,
   filter: (input: string) => {
     const res = input.split(" ").map((s) => new RegExp(escapeRegExp(s), "i"));

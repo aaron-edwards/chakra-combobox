@@ -14,20 +14,22 @@ function setup(jsx: React.ReactElement) {
       within(getCombobox()).getByRole("button", { name: "toggle menu" }),
     getList: () => within(getCombobox()).getByRole("listbox"),
     getTextbox: () => within(getCombobox()).getByRole("textbox"),
+    getClearButton: () =>
+      within(getCombobox()).getByRole("button", { name: "clear" }),
   };
 }
 
 describe("<Combobox />", () => {
   describe.each`
     virtual
-    ${false}
+    ${undefined}
     ${true}
-  `("When virtual is $virtual", ({ virtaul }) => {
+  `("When virtual is $virtual", ({ virtual }) => {
     const props = {
       name: "combobox",
       items: ["Dog", "Cat", "Bird"],
       onChange: jest.fn(),
-      virtaul,
+      virtual,
     };
     it("should contain a combobox", () => {
       const { getCombobox } = setup(<Combobox {...props} />);
@@ -37,7 +39,7 @@ describe("<Combobox />", () => {
     describe("when menu is opened", () => {
       it("should display all items", async () => {
         const { user, getList, getToggleButton } = setup(
-          <Combobox {...props} />
+          <Combobox {...props} virtual />
         );
         await user.click(getToggleButton());
 
@@ -80,6 +82,26 @@ describe("<Combobox />", () => {
         await user.click(getToggleButton());
         await user.click(getByText("Dog"));
         expect(props.onChange).toHaveBeenCalledWith("Dog");
+      });
+    });
+
+    describe("clear", () => {
+      it("should clear the current selection", async () => {
+        const { user, getClearButton } = setup(
+          <Combobox {...props} value="Cat" />
+        );
+        await user.click(await getClearButton());
+        expect(props.onChange).toHaveBeenCalledWith(null);
+      });
+
+      it("should not contain a clear button if value is null", async () => {
+        const { getTextbox, queryByRole } = setup(
+          <Combobox {...props} value={null} />
+        );
+        expect(
+          queryByRole("button", { name: "clear" })
+        ).not.toBeInTheDocument();
+        expect(getTextbox()).toHaveValue("");
       });
     });
   });

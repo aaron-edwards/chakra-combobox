@@ -13,7 +13,7 @@ export type ComboboxMenuProps<T> = {
   getItemProps: UseComboboxPropGetters<T>["getItemProps"];
   maxHeight: number;
   highlightedIndex?: number;
-  selectedItem?: T | null;
+  selectedItems: T[];
   scrollIndex?: number;
 };
 
@@ -27,7 +27,7 @@ export default function ComboboxList<T>({
   getItemProps,
   maxHeight,
   highlightedIndex,
-  selectedItem,
+  selectedItems,
 }: ComboboxMenuProps<T>) {
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.200");
   const bg = useColorModeValue("white", "gray.800");
@@ -50,7 +50,7 @@ export default function ComboboxList<T>({
       {isOpen &&
         items.map((item, index) => {
           const highlighted = highlightedIndex === index;
-          const selected = selectedItem === item;
+          const selected = selectedItems.includes(item);
           return (
             <ListItem
               key={itemKey(item)}

@@ -14,7 +14,7 @@ export type ComboboxMenuProps<T> = {
   getItemProps: UseComboboxPropGetters<T>["getItemProps"];
   maxHeight: number;
   highlightedIndex?: number;
-  selectedItem?: T | null;
+  selectedItems: T[];
   scrollIndex?: number;
 };
 
@@ -28,7 +28,7 @@ export default function VirtualisedComboboxList<T>({
   getItemProps,
   maxHeight,
   highlightedIndex,
-  selectedItem,
+  selectedItems,
   scrollIndex,
 }: ComboboxMenuProps<T>) {
   const listRef = useRef<HTMLElement>(null);
@@ -68,7 +68,7 @@ export default function VirtualisedComboboxList<T>({
           rowVirtualizer.virtualItems.map((virtualRow) => {
             const item = items[virtualRow.index];
             const highlighted = highlightedIndex === virtualRow.index;
-            const selected = selectedItem === item;
+            const selected = selectedItems.includes(item);
             return (
               <ListItem
                 key={virtualRow.index}
